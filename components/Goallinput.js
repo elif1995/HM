@@ -1,5 +1,5 @@
-import {StyleSheet, View, TextInput, Button, Modal, Alert, ToastAndroid} from 'react-native'
-import {useState} from 'react'
+import {StyleSheet, View ,Text , TextInput, Button, Modal, Alert, ToastAndroid, Pressable} from 'react-native'
+import {useState} from 'react';
 
 function GoalInput (props) {
   const[enteredGoalText, setEnteredGoalText] = useState('');
@@ -7,6 +7,7 @@ function GoalInput (props) {
 
   const showAddedItemToast = () => {
     ToastAndroid.show('פריט נוסף לרשימה', ToastAndroid.LONG);
+    
   };
 
   function goalTextInputHandler(enteredText){
@@ -35,65 +36,77 @@ function GoalInput (props) {
   }
 
   return(
-    <Modal visible={props.visible} animationType='slide'>
     <View style={styles.inputContainer}>
-        {/* <Image style={styles.image} source={require('../assets/favicon.png')}/> */}
-        <TextInput value={enteredGoalText} style={styles.textInput} 
-        placeholder="המוצר שלך" 
-        onChangeText={goalTextInputHandler} 
-        maxLength={15} 
-        />
+    <TextInput
+      value={enteredGoalText}
+      style={styles.textInput}
+      placeholder="המוצר שלך"
+      onChangeText={goalTextInputHandler}
+      maxLength={15}
+      autoCapitalize="none"
+      autoCorrect={false}
+    />
 
-        <TextInput value={enteredGoalNumber} style={styles.textInput} 
-        placeholder=" הכמות הרצויה" 
-        onChangeText={goalNumberInputHandler} 
-        maxLength={5} 
-        keyboardType='number-pad'
-        
-        autoCorrect={false}
-        />
-        <View style={styles.buttonContainer}>
-          <View style={styles.button}><Button color="#42A362"  title="הוסף" onPress={addGoalHandler}/></View>
-          <View style={styles.button}><Button color="#f31282" title="בטל" onPress={props.onCancel}/></View>
-          
-        </View>
+    <TextInput
+      value={enteredGoalNumber}
+      style={styles.textInput}
+      placeholder=" הכמות הרצויה"
+      onChangeText={goalNumberInputHandler}
+      maxLength={5}
+      keyboardType="number-pad"
+      autoCorrect={false}
+    />
+
+    <View style={styles.buttonContainer}>
+      <View style={styles.buttonContainer}>
+        <Pressable  style={[styles.button, {borderColor:'green', borderWidth: 1}]} onPress={addGoalHandler} ><Text style={{ color:'green',fontWeight: 'bold',fontSize:18, padding:10}} >הוסף</Text></Pressable>
       </View>
-    </Modal>
-  )
+      <View style={styles.buttonContainer}>
+        <Pressable  style={[styles.button, {borderColor:'red', borderWidth: 1}]} onPress={props.onCancel} ><Text style={{color: 'red', fontWeight: 'bold', fontSize:18, padding:10}} >בטל</Text></Pressable>
+      </View>
+    </View>
+  </View>
+)
 }
 
 export default GoalInput
 
 const styles = StyleSheet.create({
-  inputContainer:{
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    
-    padding: 16
-  },
-  textInput:{
-    borderWidth: 1,
-    borderColor: '#daeaf6',
-    width: '90%',
-    margin:6,
-    padding: 8,
-    backgroundColor:'#DFFFE9',
-    borderRadius: 6
-  },
-  buttonContainer:{
-    marginTop:16,
-    flexDirection:"row",
+inputContainer: {
+  flex: 1,
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: 16,
+},
+textInput: {
+  borderWidth: 1,
+  borderColor: '#daeaf6',
+  width: '90%',
+  margin: 6,
+  padding: 10,
+  backgroundColor: 'white',
+  borderRadius: 6,
+  fontSize: 16,
+},
+buttonContainer:{
+  marginTop:2,
+  flexDirection:"row",
 
-  },
-  button: {
-    width: 100,
-    margin: 8
-  },
-  image: {
-    width: 100,
-    height: 100,
-    margin: 20,
-  }
+},
+image: {
+  width: 100,
+  height: 100,
+  margin: 20,
+},
+button: {
+  width: 100,
+  margin: 8,
+  backgroundColor:'white',
+  borderRadius: 6,
+  elevation: 4,
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexDirection: 'row'
+},
 })

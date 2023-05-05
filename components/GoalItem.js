@@ -1,24 +1,26 @@
 import {StyleSheet, View, Text, Pressable, Vibration} from 'react-native';
 import {useEffect, useState} from 'react';
 import {MaterialIcons, Feather, MaterialCommunityIcons} from '@expo/vector-icons'
+import { useDispatch } from 'react-redux';
+import { editIsPicked} from '../store/redux/ShopingCartSlice'
 
 function GoalItem(props) {
 
   const ONE_SECOND_IN_MS = 1000;
 
+  const dispatch = useDispatch()
 
-
-  const [isChecked, setIsChecked] = useState(false);
-
-  function handleChecked() {
-    setIsChecked(!isChecked)
+  function handleChecked(isPicked, id) {
+    dispatch(editIsPicked({isPicked: isPicked, id: id}))
     Vibration.vibrate(0.1 * ONE_SECOND_IN_MS)
   }
 
+  
+
   function handleStyle () {
-    if(isChecked) {
+    if(props.isPicked === true) {
        return styles.goalItemChecked
-    }else{
+    }else {
       return styles.goalItem
     }
   }
@@ -42,7 +44,10 @@ function GoalItem(props) {
               </View>
             </Pressable>
         </View>
-                {!isChecked ? <Text style={styles.goalOk}  onPress={handleChecked}><MaterialIcons name="add-task" size={24} color='green'/></Text> : <Text style={styles.goalCancel}  onPress={handleChecked}><MaterialCommunityIcons color='red' name="cancel" size={24} /></Text>}
+                {!props.isPicked ? <Text style={styles.goalOk}  onPress={() => handleChecked(props.isPicked, props.id)}><MaterialIcons name="add-task" size={24} color='green'/></Text> : <Text style={styles.goalCancel}  onPress={() => handleChecked(props.isPicked, props.id)}><MaterialCommunityIcons color='red' name="cancel" size={24} /></Text>}
+        
+        
+
         </View>
   );
 }
@@ -55,7 +60,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flexDirection:'row-reverse',
     alignItems: 'center',
-   
+    
   },
   goalItem:{
     flex:1,

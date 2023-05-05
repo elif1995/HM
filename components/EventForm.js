@@ -9,11 +9,16 @@ import { addEvents } from '../store/redux/EventSlice.js';
 
 function EventForm (props) {
   const [description, setDescription] = useState('');
+  const [hour, setHour] = useState('');
   const [selectedDate, setSelectedDate] = useState('')
   
   
   function eventDescriptionInputHandler(enteredText){
     setDescription(enteredText);
+    
+  }
+  function eventHourInputHandler(enteredHour){
+    setHour(enteredHour);
     
   }
 
@@ -29,8 +34,9 @@ function EventForm (props) {
       }] )
     }else{
    
-    props.addEventHandler(selectedDate, description);
+    props.addEventHandler(selectedDate, description, hour, props.color);
     setDescription('')
+    setHour('')
     setSelectedDate(null)
     
   }
@@ -82,6 +88,11 @@ function EventForm (props) {
           placeholder="תיאור האירוע"
           value={description}
           onChangeText={eventDescriptionInputHandler}
+        />
+        <TextInput style={styles.textInput}
+          placeholder="שעה"
+          value={hour}
+          onChangeText={eventHourInputHandler}
         />
         <Button
           title="יצירת אירוע"

@@ -6,7 +6,6 @@ import {LocaleConfig} from 'react-native-calendars';
 import format from 'date-fns/format';
 import { useDispatch, useSelector } from 'react-redux';
 import { addEvents } from '../store/redux/EventSlice.js';
-import SelectDropdown from 'react-native-select-dropdown'
 
 
 
@@ -48,8 +47,6 @@ LocaleConfig.defaultLocale = 'il';
 
 
 function EventsCalendar() {
-  const usersColors = ["yellow","blue", "all"]
-  const [selectedUserColor, setSelectedUserColor] = useState('all')
   // useState hook to manage the state of the calendar's items
   const [items, setItems] = useState({});
   // useState hook to manage the visibility of the "Add Event" modal
@@ -61,7 +58,7 @@ function EventsCalendar() {
   const Events = useSelector((state) => state.events);
 
    // function to handle adding a new event to the calendar
-  const addEventHandler = (enteredEventDate, enteredEventDescription, enteredEventHour, enteredEventColor) => {
+   const addEventHandler = (enteredEventDate, enteredEventDescription, enteredEventHour, enteredEventColor) => {
 
     // dispatch an action to add the new event to the events state in the Redux store
     dispatch(addEvents({
@@ -120,30 +117,18 @@ function EventsCalendar() {
    
   
    // function to render an event on the calendar
-   const renderItems = (item) => {
+  const renderItems = (item) => {
+    if(item.color === "yellow"){
 
-    if(item.color === selectedUserColor){
-
-      return(
-        <View style={{borderColor:item.color,borderWidth: 3, elevation:3,backgroundColor: 'white', margin: 10, padding:10, height: 100 , borderRadius: 10}}>
-          <Text style={{fontWeight:'bold', fontSize:16}}>נושא: <Text style={{fontWeight:'normal', fontSize:16}}>{item.name}</Text> </Text>
-          <Text style={{fontWeight:'bold', fontSize:16}}>שעה: <Text style={{fontWeight:'normal', fontSize:16}}>{item.hour}</Text> </Text>
-        </View>
-      )
-    
-   }else if(selectedUserColor === 'all'){
-    return(
-      <View style={{borderColor:item.color,borderWidth: 3, elevation:3,backgroundColor: 'white', margin: 10, padding:10, height: 100 , borderRadius: 10}}>
-        <Text style={{fontWeight:'bold', fontSize:16}}>נושא: <Text style={{fontWeight:'normal', fontSize:16}}>{item.name}</Text> </Text>
-        <Text style={{fontWeight:'bold', fontSize:16}}>שעה: <Text style={{fontWeight:'normal', fontSize:16}}>{item.hour}</Text> </Text>
-      </View>
-    )
-   }else{
-    return null
-   }
-   
-   
-    
+      
+        return(
+          <View style={{borderColor:item.color,borderWidth: 3, elevation:3,backgroundColor: 'white', margin: 10, padding:10, height: 100 , borderRadius: 10}}>
+            <Text style={{fontWeight:'bold', fontSize:16}}>נושא: <Text style={{fontWeight:'normal', fontSize:16}}>{item.name}</Text> </Text>
+            <Text style={{fontWeight:'bold', fontSize:16}}>שעה: <Text style={{fontWeight:'normal', fontSize:16}}>{item.hour}</Text> </Text>
+          </View>
+        )
+     
+    }
   }
   // function to render an empty date on the calendar
   const renderEmptyDate = () => {
@@ -155,8 +140,8 @@ function EventsCalendar() {
   }
   
   
-  
-  const color = 'blue'
+  const color = 'yellow'
+  console.log(items)
 
   return (
     <View style={styles.container}>
@@ -167,22 +152,6 @@ function EventsCalendar() {
       {/* EventForm component to add new events to the calendar */}
       <EventForm visible={visible} onClose={handleCloseModal} addEventHandler={addEventHandler} color={color}/>
 
-      <SelectDropdown
-        data={usersColors}
-        onSelect={(selectedItem, index) => {
-          setSelectedUserColor(selectedItem)
-        }}
-        buttonTextAfterSelection={(selectedItem, index) => {
-          // text represented after item is selected
-          // if data array is an array of objects then return selectedItem.property to render after item is selected
-          return selectedItem
-        }}
-        rowTextForSelection={(item, index) => {
-          // text represented for each item in dropdown
-          // if data array is an array of objects then return item.property to represent item in dropdown
-          return item
-        }}
-      />  
       {/* Agenda component to display the events calendar */}
         <Agenda
          items={items}

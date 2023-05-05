@@ -1,14 +1,18 @@
 import {View, StyleSheet, Image, Button, Text, Pressable, FlatList, StatusBar} from 'react-native';
 import { useState, useEffect } from 'react';
-
+import {useSelector} from 'react-redux'
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
-import {MaterialIcons, Feather, MaterialCommunityIcons} from '@expo/vector-icons'
-
+import { Fontisto, MaterialIcons } from '@expo/vector-icons';
 import GetImage from '../components/GetImage';
 
 
 export default function ReceiptPicker() {
+
+  const productsPicked = useSelector((state) => state.shoppingCart);
+ 
+  console.log(productsPicked.allPickedItems)
+
   const [image,setImage] = useState(null);
   const [imageList, setImageList] = useState([
     {imageUri: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/ReceiptSwiss.jpg/170px-ReceiptSwiss.jpg",
@@ -70,15 +74,33 @@ export default function ReceiptPicker() {
           showsHorizontalScrollIndicator={true}
           bounces={false}
         />
-  
+        
   
   return(
     
     
     <View styles={styles.container}>
       
-        <Button title="הוסף קבלה"  onPress={PickImage}/>
-        {imagePreview}
+        {/* <Button title="הוסף קבלה"  onPress={PickImage}/>
+        {imagePreview} */}
+
+        <FlatList
+        data={productsPicked.allPickedItems}
+        renderItem= {(item) => {return(
+          <View style={styles.itemContainer}>
+            <MaterialIcons name="history" size={30}  />
+            <Text style={styles.itemText}>
+              {item.item.text}
+            </Text>
+            <Text style={styles.itemText}>
+               {item.item.number } יח'  
+            </Text>
+          </View>
+        )}}
+
+        
+        
+        />
     </View>
     
   )
@@ -87,13 +109,26 @@ export default function ReceiptPicker() {
 
 const styles = StyleSheet.create({
   container:{
-    
+    flex:1,
     backgroundColor: '#ffff',
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
     
     
+  },
+  itemContainer:{
+    flex:1,
+    margin:10,
+    padding:10,
+    flexDirection: 'row',
+    justifyContent:'space-around',
+    alignItems: 'center',
+    borderBottomColor: 'grey',
+    borderBottomWidth: 2
+  },
+  itemText:{
+    fontSize: 25
   },
   imageContainer:{
     marginHorizontal:30,

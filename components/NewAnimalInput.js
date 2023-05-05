@@ -8,10 +8,6 @@ import * as ImagePicker from 'expo-image-picker';
 
 
 function GoalInput (props) {
-  
-  
-  
-
   const[enteredImage, setEnteredImage] = useState();
   const[enteredName, setEnteredName] = useState('');
   const[enteredage, setEnteredAge] = useState('');
@@ -34,10 +30,7 @@ function GoalInput (props) {
     let fDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear();
     let fTime =  + tempDate.getMinutes() + ' : ' + tempDate.getHours()
     setEnteredAppointment(fDate  + ' (' + fTime + ')')
-    
     props.handleOnChange(enteredAppointment, 'AppointmentData')
-    
-    
   }
 
   const showMode = (currentMode) => {
